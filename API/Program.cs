@@ -14,6 +14,24 @@ builder.Services.AddDbContext<StoreContext>(opt=>{
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+#region Cors
+       var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyHeader()
+                                            .AllowAnyMethod()
+                                            .AllowCredentials()
+                                            .WithOrigins("http://localhost:3000");
+                                  });
+        });
+        //AllowCredentials() อนุญาตให้ client ใช้คุกกี้ของ Api ได้
+    
+#endregion
+
+
 //MiddleWare
 var app = builder.Build();
 
@@ -43,6 +61,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
