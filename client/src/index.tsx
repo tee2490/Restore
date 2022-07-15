@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import "./app/layout/styles.css";
 import App from "./app/layout/App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
+import { StoreProvider } from "./app/context/StoreContext";
 
 export const history = createBrowserHistory({ window });
 
@@ -15,7 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <HistoryRouter history={history}>
+      <StoreProvider>
         <App />
+      </StoreProvider>
     </HistoryRouter>
   </React.StrictMode>
 );

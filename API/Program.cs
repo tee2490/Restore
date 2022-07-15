@@ -29,7 +29,6 @@ builder.Services.AddDbContext<StoreContext>(opt=>{
                                   });
         });
         //AllowCredentials() อนุญาตให้ client ใช้คุกกี้ของ Api ได้
-    
 #endregion
 
 
