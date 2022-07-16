@@ -17,25 +17,26 @@ import { ToastContainer } from "react-toastify";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import BasketPage from "../../features/basket/BasketPage";
-import { useStoreContext } from "../context/StoreContext";
 import { getCookie } from "../util/util";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import CheckoutPage from "../../features/checkout/CheckoutPage";
+import { useAppDispatch } from "../store/configureStore";
+import { setBasket } from "../../features/basket/basketSlice";
 
 export default function App() {
-  const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize
+  const dispatch =  useAppDispatch();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const buyerId = getCookie("buyerId");
     if (buyerId) {
       agent.Basket.get()
-        .then((basket) => setBasket(basket))
+        .then((basket) => dispatch(setBasket(basket)))
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
     } else setLoading(false);
-  }, [setBasket]);
+  }, [dispatch]);
 
   const [mode, setMode] = useState(false);
   const modeDisplay = mode ? "dark" : "light";
