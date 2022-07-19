@@ -35,7 +35,7 @@ export default function App() {
         .then((basket) => dispatch(setBasket(basket)))
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
-    } else setLoading(false);
+    } else {setLoading(false)};
   }, [dispatch]);
 
   const [mode, setMode] = useState(false);
