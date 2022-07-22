@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { history } from "../..";
 import { PaginatedResponse } from "../models/pagination";
+import { store } from "../store/configureStore";
 
 //เป็น Service สำหรับติดต่อกับ Server
 
@@ -12,6 +13,13 @@ axios.defaults.withCredentials = true; //อนุญาตให้เข้า
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500)); //delay
 
 const responseBody = (response: AxiosResponse) => response.data;
+
+//แนบ token ไปกับ Header
+axios.interceptors.request.use((config: any) => {
+    const token = store.getState().account.user?.token; //เรียกใช้ State โดยตรง
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+})
 
 //You can intercept requests or responses before they are handled by then or catch.
 //.use มี Promise คือ onFullfill กรณีสำเร็จ onReject กรณีมีข้อผิดพลาด
@@ -55,7 +63,7 @@ axios.interceptors.response.use(async response => {
             toast.error(result.title);
             break;
         case 401:
-            toast.error(result.title || 'Unauthorized');
+            toast.error(result.title);
             break;
         case 403:
             toast.error('You are not allowed to do that!');
@@ -100,10 +108,17 @@ const Basket = {
     removeItem: (productId: number, quantity = 1) => requests.delete(`basket?productId=${productId}&quantity=${quantity}`)
 }
 
+const Account = {
+    login: (values: any) => requests.post('account/login', values),
+    register: (values: any) => requests.post('account/register', values),
+    currentUser: () => requests.get('account/currentUser'),
+}
+
 const agent = {
     TestErrors,
     Catalog,
-    Basket
+    Basket,
+    Account
 }
 
 export default agent;

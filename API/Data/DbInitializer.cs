@@ -1,35 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Data
 {
-     public static class DbInitializer
+    public static class DbInitializer
     {
-        public static async Task Initialize(StoreContext context)
-         {
-        //     if (!userManager.Users.Any())
-        //     {
-        //         var user = new User
-        //         {
-        //             UserName = "bob",
-        //             Email = "bob@test.com"
-        //         };
+        public static async Task Initialize(StoreContext context, UserManager<User> userManager)
+        {
+            #region Identityสร้างข้อมูล User
+            if (!userManager.Users.Any())
+            {
+                var user = new User
+                {
+                    UserName = "tee",
+                    Email = "tee@test.com"
+                };
 
-        //         await userManager.CreateAsync(user, "Pa$$w0rd");
-        //         await userManager.AddToRoleAsync(user, "Member");
+                await userManager.CreateAsync(user, "Pa$$w0rd"); //ทำการ hash Password
+                await userManager.AddToRoleAsync(user, "Member"); // มี Role เดียว
 
-        //         var admin = new User
-        //         {
-        //             UserName = "admin",
-        //             Email = "admin@test.com"
-        //         };
+                var admin = new User
+                {
+                    UserName = "admin",
+                    Email = "admin@test.com"
+                };
 
-        //         await userManager.CreateAsync(admin, "Pa$$w0rd");
-        //         await userManager.AddToRolesAsync(admin, new[] {"Member", "Admin"});
-        //     }
+                await userManager.CreateAsync(admin, "Pa$$w0rd"); //ทำการ hash Password
+                await userManager.AddToRolesAsync(admin, new[] { "Member", "Admin" }); //มีหลาย Roles
+            }
+            #endregion
 
             if (context.Products.Any()) return;
 
