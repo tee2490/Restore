@@ -1,4 +1,5 @@
 using API.Data;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,10 @@ var app = builder.Build();
         {
             logger.LogError(ex, "Problem migrating data");
         }
+#endregion
+
+#region ส่ง error ไปให้ Axios ตอนทำ Interceptor
+  app.UseMiddleware<ExceptionMiddleware>(); 
 #endregion
 
 // Configure the HTTP request pipeline.
