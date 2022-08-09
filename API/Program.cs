@@ -28,7 +28,7 @@ builder.Services.AddDbContext<StoreContext>(opt=>{
                                             .WithOrigins("http://localhost:3000");
                                   });
         });
-        //AllowCredentials() อนุญาตให้ client ใช้คุกกี้ของ Api ได้
+        //AllowCredentials() อนุญาตให้ client ส่งคุกกี้ไปยัง Api ได้
     
 #endregion
 

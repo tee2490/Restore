@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
+import { useStoreContext } from "../context/StoreContext";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
@@ -36,6 +37,9 @@ const navStyles = {
 };
 
 export default function Header(props: any) {
+  const { basket } = useStoreContext();
+  const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
+  
   return (
     <>
       <AppBar position="static" sx={{ mb: 4 }}>
@@ -69,7 +73,7 @@ export default function Header(props: any) {
               sx={{ color: "inherit" }}
               size="large"
             >
-              <Badge badgeContent={4} color="warning">
+              <Badge badgeContent={itemCount} color="warning">
                 <ShoppingCart />
               </Badge>
             </IconButton>
