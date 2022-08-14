@@ -56,8 +56,8 @@ export default function ProductCard({ product }: Props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <LoadingButton
-          loading={status.includes("pendingAddItem" + product.id)} //includes('pending') ข้อความที่ต้องการค้นหาหรือเปรียบเทียบ
+        <LoadingButton 
+          loading={status === 'pendingAddItem' + product.id} //includes('pending') ข้อความที่ต้องการค้นหาหรือเปรียบเทียบ
           onClick={() =>
             dispatch(addBasketItemAsync({ productId: product.id }))
           }
