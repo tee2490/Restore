@@ -74,8 +74,8 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            var userBasket =  await RetrieveBasket(User.Identity.Name);
-            
+            var userBasket = await RetrieveBasket(User.Identity.Name);
+
             return new UserDto
             {
                 Email = user.Email,
@@ -97,6 +97,16 @@ namespace API.Controllers
                    .ThenInclude(p => p.Product)
                    .FirstOrDefaultAsync(x => x.BuyerId == buyerId);
             return basket;
+        }
+
+        [Authorize] //Token ถูกแนบมากับ axios.interceptors.request
+        [HttpGet("savedAddress")]
+        public async Task<ActionResult<UserAddress>> GetSavedAddress()
+        {
+            return await _userManager.Users
+                .Where(x => x.UserName == User.Identity.Name)
+                .Select(user => user.Address)
+                .FirstOrDefaultAsync();
         }
 
     }
