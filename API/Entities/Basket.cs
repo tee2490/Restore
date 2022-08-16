@@ -7,6 +7,9 @@ namespace API.Entities
 
         //สร้าง และ Include BasketItem ให้โดยอัตโนมัติ
         public List<BasketItem> Items { get; set; } = new();
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
+
 
         public void AddItem(Product product, int quantity)
         {
