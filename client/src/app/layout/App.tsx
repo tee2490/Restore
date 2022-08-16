@@ -16,19 +16,45 @@ import BasketPage from "../../features/basket/BasketPage";
 import { fetchBasketAsync } from "../../features/basket/basketSlice";
 import Catalog from "../../features/catalog/Catalog";
 import ProductDetails from "../../features/catalog/ProductDetails";
-import CheckoutPage from "../../features/checkout/CheckoutPage";
 import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
 import ContactPage from "../../features/contact/ContactPage";
 import HomePage from "../../features/home/HomePage";
 import OrderPage from "../../features/orders/OrderPage";
 import NotFound from "../errors/NotFound";
 import ServerError from "../errors/ServerError";
-import { useAppDispatch } from "../store/configureStore";
+import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import Header from "./Header";
 import LoadingComponent from "./LoadingComponent";
 import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
 
+const mainRoutes = (
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/catalog" element={<Catalog />} />
+    <Route path="/catalog/:id" element={<ProductDetails />} />
+    <Route path="/basket" element={<BasketPage />} />
+    <Route path="/register" element={<Register />} />
+    <Route path="/about" element={<AboutPage />} />
+    <Route path="/contact" element={<ContactPage />} />
+    <Route path="/server-error" element={<ServerError />} />
+    <Route path="*" element={<NotFound />} />
+    <Route
+      path="/login"
+      element={
+        <PrivateLogin>
+          <Login />
+        </PrivateLogin>
+      }
+    />
+    <Route element={<PrivateRoute />}>
+      <Route path="/checkout" element={<CheckoutWrapper />} />
+      <Route path="/order" element={<OrderPage />} />
+    </Route>
+  </Routes>
+);
+
 export default function App() {
+  const { isFull } = useAppSelector((state) => state.container);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -71,31 +97,11 @@ export default function App() {
         />
         <CssBaseline />
         <Header handleMode={handleMode} />
-        <Container>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/catalog/:id" element={<ProductDetails />} />
-            <Route path="/basket" element={<BasketPage />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/server-error" element={<ServerError />} />
-            <Route path="*" element={<NotFound />} />
-            <Route
-              path="/login"
-              element={
-                <PrivateLogin>
-                  <Login />
-                </PrivateLogin>
-              }
-            />
-            <Route element={<PrivateRoute />}>
-              <Route path="/checkout" element={<CheckoutWrapper/>} />
-              <Route path="/order" element={<OrderPage/>}/>
-            </Route>
-          </Routes>
-        </Container>
+        {isFull ? (
+          <>{mainRoutes}</>
+        ) : (
+          <Container sx={{ mt: 10 }}>{mainRoutes}</Container>
+        )}
       </ThemeProvider>
     </>
   );

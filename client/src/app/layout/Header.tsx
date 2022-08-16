@@ -44,7 +44,7 @@ export default function Header(props: any) {
 
   return (
     <>
-      <AppBar position="static" sx={{ mb: 4 }}>
+      <AppBar position="static">
         <Toolbar
           sx={{
             display: "flex",

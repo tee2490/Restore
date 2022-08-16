@@ -12,6 +12,8 @@ const sleep = () => new Promise(resolve => setTimeout(resolve, 500)); //delay
 
 const responseBody = (response: AxiosResponse) => response.data;
 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
 //แนบ token ไปกับ Header
 axios.interceptors.request.use((config: any) => {
     const token = store.getState().account.user?.token; //เรียกใช้ State โดยตรง
@@ -22,7 +24,7 @@ axios.interceptors.request.use((config: any) => {
 //You can intercept requests or responses before they are handled by then or catch.
 //.use มี Promise คือ onFullfill กรณีสำเร็จ onReject กรณีมีข้อผิดพลาด
 axios.interceptors.response.use(async response => {
-    await sleep()
+    if(process.env.NODE_ENV === 'development')  await sleep()
     
     const pagination = response.headers['pagination']; //ส่งมาจาก ProductController
     if (pagination) {
