@@ -12,6 +12,7 @@ import AboutPage from "../../features/about/AboutPage";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 import Login from "../../features/account/Login";
 import Register from "../../features/account/Register";
+import Inventory from "../../features/admin/Inventory";
 import BasketPage from "../../features/basket/BasketPage";
 import { fetchBasketAsync } from "../../features/basket/basketSlice";
 import Catalog from "../../features/catalog/Catalog";
@@ -49,6 +50,9 @@ const mainRoutes = (
     <Route element={<PrivateRoute />}>
       <Route path="/checkout" element={<CheckoutWrapper />} />
       <Route path="/order" element={<OrderPage />} />
+      </Route>
+    <Route element={<PrivateRoute roles={["Admin"]} />}>
+      <Route path="/inventory" element={<Inventory />} />
     </Route>
   </Routes>
 );
