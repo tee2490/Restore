@@ -4,7 +4,7 @@ import { history } from "../..";
 //history มาจาก index.tsx
 
 export default function ServerError() {
-  const { state } = useLocation(); //อ่านออบเจคที่แนบมากับ agent.tsx
+  const { state } = useLocation(); //อ่านออบเจคที่แนบมากับ agent.tsx (history.push('/server-error', { state: data }))
 
   var state1 = JSON.parse(JSON.stringify(state));
   console.log(state1);
